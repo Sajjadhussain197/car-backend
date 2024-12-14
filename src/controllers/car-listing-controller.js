@@ -4,8 +4,6 @@ import CarListing from '../models/car-listing-model.js';
 const createCarListing = async (req, res) => {
   try {
     const { carModel, price, phoneNumber, city } = req.body;
-    console.log(carModel, price, phoneNumber, city, req.files);
-    // Create image URLs array from uploaded files
     const imageUrls = req.files.map(file => file.path);
 
     // Check if number of images exceeds max limit
