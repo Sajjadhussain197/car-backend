@@ -16,6 +16,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the car selling App!' });
+});
+
+
 // Routes
   import authRoutes from './routes/auth-route.js';
   import carRoutes from './routes/car-route.js';
