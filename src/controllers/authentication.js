@@ -1,6 +1,6 @@
-const User = require('../models/user-model');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import User from '../models/user-model.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const authController = {
   login: async (req, res) => {
@@ -32,7 +32,8 @@ const authController = {
 
       res.json({ 
         token, 
-        userId: user._id 
+        userId: user._id ,
+        email: user.email 
       });
     } catch (error) {
       res.status(500).json({ 
@@ -45,7 +46,7 @@ const authController = {
   register: async (req, res) => {
     try {
       const { email, password } = req.body;
-
+      console.log(email,password)
       // Check if user already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
@@ -84,5 +85,4 @@ const authController = {
     }
   }
 };
-
-module.exports = authController;
+export default authController;

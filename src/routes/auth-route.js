@@ -1,8 +1,8 @@
 // authRoutes.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authController = require('../controllers/authentication');
-const { body, validationResult } = require('express-validator');
+import authController from '../controllers/authentication.js';
+import { body, validationResult } from 'express-validator';
 
 router.post('/login', [
   body('email').isEmail().withMessage('Invalid email'),
@@ -21,4 +21,4 @@ router.post('/register', [
   body('password').notEmpty().withMessage('Password is required')
 ], authController.register);
 
-module.exports = router;
+export default router;

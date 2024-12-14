@@ -1,8 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-require('dotenv').config();
-const bodyParser = require('body-parser');
+import express from 'express';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+
+dotenv.config();
 
 const app = express();
 
@@ -15,8 +17,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 // Routes
-const authRoutes = require('./routes/auth-route');
-const carRoutes = require('./routes/car-route');
+  import authRoutes from './routes/auth-route.js';
+  import carRoutes from './routes/car-route.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
@@ -31,5 +33,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-module.exports = app;
+export default app;

@@ -1,10 +1,10 @@
 // src/controllers/carListingController.js
-const CarListing = require('../models/car-listing-model');
+import CarListing from '../models/car-listing-model.js';
 
 const createCarListing = async (req, res) => {
   try {
-    const { carModel, price, phone, city } = req.body;
-    
+    const { carModel, price, phoneNumber, city } = req.body;
+    console.log(carModel, price, phoneNumber, city, req.files);
     // Create image URLs array from uploaded files
     const imageUrls = req.files.map(file => file.path);
 
@@ -21,7 +21,8 @@ const createCarListing = async (req, res) => {
       user: req.user.id,
       carModel,
       price,
-      phone,
+      phoneNumber,
+      maxPictures: parseInt(req.body.maxPictures, 10),
       city,
       images: imageUrls
     });
@@ -35,4 +36,4 @@ const createCarListing = async (req, res) => {
   }
 };
 
-module.exports = { createCarListing };
+export default { createCarListing };

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const CarListingSchema = new mongoose.Schema({
   user: {
@@ -41,5 +41,4 @@ const CarListingSchema = new mongoose.Schema({
     max: 10
   }
 }, { timestamps: true });
-
-module.exports = mongoose.model('CarListing', CarListingSchema);
+export default mongoose.model('CarListing', CarListingSchema);

@@ -1,43 +1,32 @@
-const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
+import cloudinary from 'cloudinary';
+import { response } from 'express';
+import fs from 'fs';
 
-// Cloudinary configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Multer memory storage
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB file size limit
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only JPEG, PNG, and GIF image files are allowed'), false);
+const uploadCloudinary = async (localfilepath) => {
+    try {
+        if (!localfilepath) {
+            console.log("no localfilepath")
+            return null;
+        } 
+        
+        const response = await cloudinary.uploader.upload(localfilepath, {
+            resource_type: "auto"
+        });
+        console.log("file is uploaded successfully", response.url);
+        
+        fs.unlinkSync(localfilepath);
+        return response;
+    } catch (error) {
+        fs.unlinkSync(localfilepath);
+        console.log(error, "file uploading to cloudinary is failed");
+        return null;
     }
-  }
-}).array('images', 5);
+}
 
-// Upload to Cloudinary
-const uploadToCloudinary = (file) => {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload_stream(
-      { folder: 'car-listings' }, 
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result.secure_url);
-      }
-    ).end(file.buffer);
-  });
-};
-
-module.exports = { 
-  upload, 
-  uploadToCloudinary 
-};
+module.exports = { uploadCloudinary };
