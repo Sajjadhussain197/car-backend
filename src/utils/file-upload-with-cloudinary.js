@@ -15,13 +15,14 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024 // 5MB file size limit
   },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only image files are allowed'), false);
+      cb(new Error('Only JPEG, PNG, and GIF image files are allowed'), false);
     }
   }
-});
+}).array('images', 5);
 
 // Upload to Cloudinary
 const uploadToCloudinary = (file) => {

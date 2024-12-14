@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -10,11 +11,12 @@ connectDB();
 
 // Middleware
 app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
 
 // Routes
-const authRoutes = require('./routes/authRoutes');
-const carRoutes = require('./routes/carRoutes');
+const authRoutes = require('./routes/auth-route');
+const carRoutes = require('./routes/car-route');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
